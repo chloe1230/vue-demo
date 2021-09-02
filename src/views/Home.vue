@@ -26,7 +26,13 @@ export default {
   },
   methods: {
     async getData() {
+      this.$store.dispatch('updateOverlay', true)
       const { data } = await Axios.get('http://localhost:3000/orders/')
+        .finally(() => {
+          setTimeout(() => {
+            this.$store.dispatch('updateOverlay', false)
+          }, 800)
+        })
       data.sort((a, b) => {
           return +new Date(b.date) - +new Date(a.date)
       })
